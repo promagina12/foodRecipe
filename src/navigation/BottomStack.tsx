@@ -22,6 +22,7 @@ import BellActiveSVG from "src/assets/AppIcon/bellActive";
 import PersonActiveSVG from "src/assets/AppIcon/personActive";
 import { Palette } from "src/styles/Palette";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
+import { navigate } from "./NavigationService";
 
 const BottomTab = createBottomTabNavigator();
 
@@ -66,7 +67,10 @@ const BottomStack = () => {
         // borderColor="gray"
         // borderWidth={0.5}
         renderCircle={() => (
-          <Pressable style={styles.btnCircle}>
+          <Pressable
+            style={styles.btnCircle}
+            onPress={() => navigate(ROUTES.CreateRecipe)}
+          >
             <PlusSVG color={Palette.white} />
           </Pressable>
         )}

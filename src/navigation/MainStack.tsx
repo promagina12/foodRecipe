@@ -3,6 +3,8 @@ import Onboarding from "src/screens/Onboarding";
 import { ROUTES } from "./Routes";
 import { createStackNavigator } from "@react-navigation/stack";
 import BottomStack from "./BottomStack";
+import RecipeDetail from "src/screens/Recipe/RecipeDetail";
+import CreateRecipe from "src/screens/CreateRecipe/CreateRecipe";
 
 const Stack = createStackNavigator();
 
@@ -15,6 +17,8 @@ const MainStack = () => {
     >
       <Stack.Screen name={ROUTES.Onboarding} component={Onboarding} />
       <Stack.Screen name={ROUTES.BottomStack} component={BottomStack} />
+      <Stack.Screen name={ROUTES.RecipeDetail} component={RecipeDetail} />
+      <Stack.Screen name={ROUTES.CreateRecipe} component={CreateRecipe} />
     </Stack.Navigator>
   );
 };

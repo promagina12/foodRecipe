@@ -7,17 +7,15 @@ import {
 } from "@expo-google-fonts/poppins";
 import {
   NavigationContainer,
-  useNavigationContainerRef,
 } from "@react-navigation/native";
 import { StatusBar } from "expo-status-bar";
-import React, { useEffect } from "react";
-import { StyleSheet, Text, View } from "react-native";
+import React from "react";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import MainStack from "src/navigation/MainStack";
+import { navigationRef } from "src/navigation/NavigationService";
 
 export default function App() {
-  const navigationRef = useNavigationContainerRef();
 
   const [loaded] = useFonts({
     PoppinsRegular: Poppins_400Regular,

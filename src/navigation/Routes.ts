@@ -6,4 +6,7 @@ export const ROUTES = {
   Discover: "Discover",
   Notification: "Notification",
   Profile: "Profile",
+
+  RecipeDetail: "RecipeDetail",
+  CreateRecipe: "CreateRecipe",
 };

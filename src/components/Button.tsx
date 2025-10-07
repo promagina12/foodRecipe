@@ -34,6 +34,13 @@ const Button: React.FC<ButtonProps> = ({
       ? Palette.neutral20
       : Palette.primary50;
 
+  const textColor =
+    type === ButtonTypes.secondary
+      ? Palette.primary50
+      : type === ButtonTypes.disable
+      ? Palette.neutral50
+      : Palette.white;
+
   return (
     <Pressable
       style={[
@@ -46,6 +53,9 @@ const Button: React.FC<ButtonProps> = ({
               paddingHorizontal: small ? 16 : 32,
               height: small ? 36 : 54,
               borderRadius: small ? 8 : 10,
+              borderWidth: type === ButtonTypes.secondary ? 1 : 0,
+              borderColor: Palette.primary50,
+              ...Style.containerCenter,
             }
           : {
               width: small ? 36 : 54,
@@ -61,6 +71,7 @@ const Button: React.FC<ButtonProps> = ({
         <Text
           style={[
             small ? textStyle.labelBold : textStyle.paragraphBold,
+            { color: textColor },
             titleStyle,
           ]}
         >

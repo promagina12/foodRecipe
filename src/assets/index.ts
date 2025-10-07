@@ -15,3 +15,9 @@ export const placeholder = {
   profile,
   noodle,
 };
+
+import noodleIcon from "./Icon/noodleIcon.png";
+
+export const icon = {
+  noodleIcon,
+};

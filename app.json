@@ -4,7 +4,14 @@
     "slug": "foodRecipe",
     "version": "1.0.0",
     "plugins": [
-      "expo-font"
+      "expo-font",
+      [
+        "expo-video",
+        {
+          "supportsBackgroundPlayback": true,
+          "supportsPictureInPicture": true
+        }
+      ]
     ]
   }
 }

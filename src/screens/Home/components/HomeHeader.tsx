@@ -6,7 +6,7 @@ import SearchBar from "src/components/SearchBar";
 
 const HomeHeader = () => {
   return (
-    <View style={{ paddingHorizontal: 20, gap: 28 }}>
+    <View style={{ paddingHorizontal: 20, gap: 28, paddingTop: 12 }}>
       <Text
         style={{
           ...TextStyle.h4Bold,
