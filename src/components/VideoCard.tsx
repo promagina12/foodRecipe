@@ -1,5 +1,5 @@
 import { View, Text, Image, Pressable, StyleSheet } from "react-native";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { responsiveWidth } from "react-native-responsive-dimensions";
 import Style from "src/styles/Style";
 import { placeholder } from "src/assets";
@@ -11,14 +11,44 @@ import BookmarkSVG from "src/assets/AppIcon/bookmark";
 import PlaySVG from "src/assets/AppIcon/play";
 import ThreeDotsHorizontalSVG from "src/assets/AppIcon/threeDotsHorizontal";
 import VideoModal from "./Modal/VideoModal";
+import useUsers from "src/hooks/useUsers";
+import { useAppDispatch } from "src/store";
+import { getUserById } from "src/store/slices/users/thunk";
+import { isNull } from "lodash";
+import { IUser } from "src/interface/user";
 
 interface Props {
   horizontal?: boolean;
   onPress?: () => void;
+  img?: string;
+  name?: string;
+  rating?: number;
+  userId: any;
 }
 
-const VideoCard: React.FC<Props> = ({ horizontal, onPress }) => {
+const VideoCard: React.FC<Props> = ({
+  horizontal,
+  onPress,
+  img,
+  name,
+  rating,
+  userId,
+}) => {
+  const dispatch = useAppDispatch();
+  const [user, setUser] = useState<IUser | null>(null);
   const [visible, setVisible] = useState(false);
+
+  useEffect(() => {
+    (async () => {
+      if (!isNull(userId)) {
+        const response = await dispatch(getUserById(userId));
+
+        if (response.payload) {
+          setUser(response.payload);
+        }
+      }
+    })();
+  }, [dispatch]);
 
   return (
     <>
@@ -36,7 +66,7 @@ const VideoCard: React.FC<Props> = ({ horizontal, onPress }) => {
           }}
         >
           <Image
-            source={placeholder.trendingMeal}
+            source={img ? { uri: img } : placeholder.trendingMeal}
             style={{ width: "100%", height: "100%" }}
           />
           <BlurView style={styles.ratingsContainer}>
@@ -47,7 +77,7 @@ const VideoCard: React.FC<Props> = ({ horizontal, onPress }) => {
                 marginTop: 4,
               }}
             >
-              4,5
+              {String(rating)}
             </Text>
           </BlurView>
           <Pressable style={styles.bookmarkContainer}>
@@ -86,7 +116,7 @@ const VideoCard: React.FC<Props> = ({ horizontal, onPress }) => {
                 color: Palette.neutral90,
               }}
             >
-              How to make sushi at home
+              {name}
             </Text>
             <Pressable>
               <ThreeDotsHorizontalSVG />
@@ -99,7 +129,7 @@ const VideoCard: React.FC<Props> = ({ horizontal, onPress }) => {
             }}
           >
             <Image
-              source={placeholder.profile}
+              source={user?.image ? { uri: user?.image } : placeholder.profile}
               style={{ width: 32, height: 32, borderRadius: 100 }}
             />
             <Text
@@ -108,7 +138,7 @@ const VideoCard: React.FC<Props> = ({ horizontal, onPress }) => {
                 color: Palette.neutral40,
               }}
             >
-              By Niki Samantha
+              By {user?.firstName} {user?.lastName}
             </Text>
           </View>
         </View>

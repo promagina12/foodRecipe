@@ -1,4 +1,4 @@
-package com.foodrecipe
+package com.anonymous.foodRecipe
 
 import android.os.Build
 import android.os.Bundle

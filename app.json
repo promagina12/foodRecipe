@@ -12,6 +12,9 @@
           "supportsPictureInPicture": true
         }
       ]
-    ]
+    ],
+    "android": {
+      "package": "com.anonymous.foodRecipe"
+    }
   }
 }

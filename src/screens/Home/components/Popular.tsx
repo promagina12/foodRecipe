@@ -1,5 +1,5 @@
 import { View, Text, FlatList, Pressable, Image } from "react-native";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import CardContainer from "./CardContainer";
 import { TextStyle } from "src/styles/fonts";
 import { Palette } from "src/styles/Palette";
@@ -7,24 +7,32 @@ import Style from "src/styles/Style";
 import { placeholder } from "src/assets";
 import BookmarkSVG from "src/assets/AppIcon/bookmark";
 import DropShadow from "react-native-drop-shadow";
+import { useAppDispatch } from "src/store";
+import useRecipes from "src/hooks/useRecipes";
+import { getRecipesByTag } from "src/store/slices/recipes/thunk";
 
-const categoryList = [
-  "Salad",
-  "Breakfast",
-  "Appetizer",
-  "Noodle",
-  "Lunch",
-  "Dinner",
-];
+interface Props {
+  tags: string[];
+}
 
-const Popular = () => {
-  const [selectedCategory, setSelectedCategory] = useState(categoryList[0]);
+const Popular: React.FC<Props> = ({ tags }) => {
+  const dispatch = useAppDispatch();
+  const { tagRecipes } = useRecipes();
+  const [selectedCategory, setSelectedCategory] = useState<any>(tags[0]);
+
+  useEffect(() => {
+    if (selectedCategory) {
+      dispatch(getRecipesByTag(selectedCategory));
+    }
+  }, [selectedCategory]);
+
+  console.log("tagRecipes: ", tagRecipes);
 
   return (
     <CardContainer title="Popular category" hideSeeAll>
       <View style={{ gap: 20 }}>
         <FlatList
-          data={categoryList}
+          data={tags}
           horizontal
           contentContainerStyle={{ paddingHorizontal: 20, gap: 8 }}
           showsHorizontalScrollIndicator={false}
@@ -56,9 +64,7 @@ const Popular = () => {
           )}
         />
         <FlatList
-          data={Array.from({
-            length: 10,
-          })}
+          data={tagRecipes}
           horizontal
           contentContainerStyle={{
             paddingHorizontal: 20,
@@ -66,7 +72,7 @@ const Popular = () => {
             paddingTop: 60,
           }}
           showsHorizontalScrollIndicator={false}
-          renderItem={() => (
+          renderItem={({ item }) => (
             <View style={{ width: 160, ...Style.containerCenter }}>
               <DropShadow
                 style={{
@@ -80,10 +86,11 @@ const Popular = () => {
                 }}
               >
                 <Image
-                  source={placeholder.noodle}
+                  source={{ uri: item.image }}
                   style={{
                     width: 110,
                     height: 110,
+                    borderRadius: 100,
                   }}
                 />
               </DropShadow>
@@ -95,6 +102,9 @@ const Popular = () => {
                   borderRadius: 12,
                   gap: 18,
                   paddingTop: 65,
+                  flex: 1,
+                  width: "100%",
+                  justifyContent: "space-between",
                 }}
               >
                 <Text
@@ -104,7 +114,7 @@ const Popular = () => {
                     textAlign: "center",
                   }}
                 >
-                  Pepper sweetcorn{"\n"}ramen
+                  {item.name}
                 </Text>
                 <View
                   style={{
@@ -127,7 +137,7 @@ const Popular = () => {
                         color: Palette.neutral90,
                       }}
                     >
-                      10 Mins
+                      {item.cookTimeMinutes} Mins
                     </Text>
                   </View>
                   <Pressable
