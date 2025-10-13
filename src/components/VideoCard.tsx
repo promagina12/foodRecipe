@@ -113,7 +113,7 @@ const VideoCard: React.FC<Props> = ({ horizontal, onPress }) => {
           </View>
         </View>
       </Pressable>
-      <VideoModal visible={visible} onClose={() => setVisible(false)} />
+      {/* <VideoModal visible={visible} onClose={() => setVisible(false)} /> */}
     </>
   );
 };
