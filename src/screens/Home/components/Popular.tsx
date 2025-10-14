@@ -26,8 +26,6 @@ const Popular: React.FC<Props> = ({ tags }) => {
     }
   }, [selectedCategory]);
 
-  console.log("tagRecipes: ", tagRecipes);
-
   return (
     <CardContainer title="Popular category" hideSeeAll>
       <View style={{ gap: 20 }}>

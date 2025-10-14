@@ -1,26 +1,28 @@
-import { View, Text, FlatList, Pressable, Image } from "react-native";
+import { Text, FlatList, Pressable, Image } from "react-native";
 import React from "react";
 import CardContainer from "./CardContainer";
-import { placeholder } from "src/assets";
 import Style from "src/styles/Style";
 import { TextStyle } from "src/styles/fonts";
 import { Palette } from "src/styles/Palette";
+import useUsers from "src/hooks/useUsers";
 
 const PopularCreator = () => {
+  const { users } = useUsers();
+
   return (
     <CardContainer title="Popular creators">
       <FlatList
-        data={Array.from({ length: 10 })}
+        data={users}
         horizontal
         showsHorizontalScrollIndicator={false}
         contentContainerStyle={{
           paddingHorizontal: 20,
           gap: 16,
         }}
-        renderItem={() => (
+        renderItem={({ item }) => (
           <Pressable style={{ width: 75, ...Style.containerCenter, gap: 8 }}>
             <Image
-              source={placeholder.profile}
+              source={{ uri: item.image }}
               style={{ width: "100%", height: 75, borderRadius: 100 }}
             />
             <Text
@@ -30,7 +32,7 @@ const PopularCreator = () => {
                 textAlign: "center",
               }}
             >
-              Niki Samantha
+              {item.firstName} {item.lastName}
             </Text>
           </Pressable>
         )}

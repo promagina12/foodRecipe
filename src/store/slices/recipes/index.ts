@@ -1,5 +1,10 @@
 import { createSelector, createSlice } from "@reduxjs/toolkit";
-import { getAllRecipe, getAllTags, getRecipesByTag } from "./thunk";
+import {
+  getAllRecipe,
+  getAllTags,
+  getRecipeById,
+  getRecipesByTag,
+} from "./thunk";
 import { RootState } from "src/store";
 import { IRecipe } from "src/interface/recipe";
 import { tags } from "react-native-svg/lib/typescript/xmlTags";
@@ -8,7 +13,9 @@ export type RecipeState = {
   isLoadingRecipes: boolean;
   isLoadingTags: boolean;
   isLoadingTagRecipes: boolean;
+  isLoadingRecipe: boolean;
   recipes: IRecipe[];
+  recipe: IRecipe | null;
   tagRecipes: IRecipe[];
   tags: string[];
   page: number;
@@ -20,7 +27,9 @@ const initialState: RecipeState = {
   isLoadingRecipes: false,
   isLoadingTags: false,
   isLoadingTagRecipes: false,
+  isLoadingRecipe: false,
   recipes: [],
+  recipe: null,
   tags: [],
   tagRecipes: [],
   page: 1,
@@ -42,6 +51,21 @@ const { actions, reducer } = createSlice({
     });
     builder.addCase(getAllRecipe.rejected, (state, action) => {
       state.isLoadingRecipes = false;
+      state.error = action.error;
+    });
+
+    //---------------------------------//
+    //---------------------------------//
+
+    builder.addCase(getRecipeById.pending, (state) => {
+      state.isLoadingRecipe = true;
+    });
+    builder.addCase(getRecipeById.fulfilled, (state, { payload }) => {
+      state.isLoadingRecipe = false;
+      state.recipe = payload;
+    });
+    builder.addCase(getRecipeById.rejected, (state, action) => {
+      state.isLoadingRecipe = false;
       state.error = action.error;
     });
 
@@ -80,6 +104,7 @@ const { actions, reducer } = createSlice({
 const selectRoot = (state: RootState) => state.recipes;
 export const recipesSelectors = {
   recipes: createSelector(selectRoot, (state) => state.recipes),
+  recipe: createSelector(selectRoot, (state) => state.recipe),
   tags: createSelector(selectRoot, (state) => state.tags),
   tagRecipes: createSelector(selectRoot, (state) => state.tagRecipes),
   isLoadingRecipes: createSelector(
@@ -87,7 +112,11 @@ export const recipesSelectors = {
     (state) => state.isLoadingRecipes
   ),
   isLoadingTags: createSelector(selectRoot, (state) => state.isLoadingTags),
-  isLoadingTagRecipes: createSelector(selectRoot, (state) => state.isLoadingTagRecipes),
+  isLoadingTagRecipes: createSelector(
+    selectRoot,
+    (state) => state.isLoadingTagRecipes
+  ),
+  isLoadingRecipe: createSelector(selectRoot, (state) => state.isLoadingRecipe),
 };
 
 export const recipesActions = {

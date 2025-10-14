@@ -9,19 +9,9 @@ import { responsiveHeight } from "react-native-responsive-dimensions";
 import RecentRecipe from "./components/RecentRecipe";
 import PopularCreator from "./components/PopularCreator";
 import useRecipes from "src/hooks/useRecipes";
-import { getAllRecipe, getAllTags } from "src/store/slices/recipes/thunk";
-import { useAppDispatch } from "src/store";
 
 const Home = () => {
-  const dispatch = useAppDispatch();
   const { recipes, tags } = useRecipes();
-
-  useEffect(() => {
-    try {
-      dispatch(getAllRecipe());
-      dispatch(getAllTags());
-    } catch (error) {}
-  }, [dispatch]);
 
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: Palette.white, gap: 20 }}>
@@ -36,7 +26,7 @@ const Home = () => {
         >
           <Trending recipes={recipes} />
           <Popular tags={tags} />
-          <RecentRecipe />
+          <RecentRecipe recipes={recipes} />
           <PopularCreator />
         </ScrollView>
       </View>

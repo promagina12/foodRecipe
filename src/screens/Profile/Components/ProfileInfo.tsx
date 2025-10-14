@@ -9,26 +9,38 @@ import { Palette } from "src/styles/Palette";
 import { responsiveWidth } from "react-native-responsive-dimensions";
 import CustomSegmentedTab from "src/components/CustomSegmentedTab";
 
-const FAKE_DATA = [
-  {
-    title: "Recipe",
-    value: "3",
-  },
-  {
-    title: "Videos",
-    value: "13",
-  },
-  {
-    title: "Followers",
-    value: "14K",
-  },
-  {
-    title: "Following",
-    value: "120",
-  },
-];
+interface Props {
+  img?: string;
+  name: string;
+  recipeCount: number;
+  videosCount: number;
+}
 
-const ProfileInfo = () => {
+const ProfileInfo: React.FC<Props> = ({
+  img,
+  name,
+  recipeCount,
+  videosCount,
+}) => {
+  const FAKE_DATA = [
+    {
+      title: "Recipe",
+      value: recipeCount,
+    },
+    {
+      title: "Videos",
+      value: videosCount,
+    },
+    {
+      title: "Followers",
+      value: "14K",
+    },
+    {
+      title: "Following",
+      value: "120",
+    },
+  ];
+
   return (
     <View>
       <View
@@ -42,7 +54,7 @@ const ProfileInfo = () => {
       >
         <View style={{ ...Style.containerSpaceBetween }}>
           <Image
-            source={placeholder.profile}
+            source={{ uri: img }}
             style={{ width: 100, height: 100, borderRadius: 100 }}
           />
           <Button
@@ -60,7 +72,7 @@ const ProfileInfo = () => {
                 color: Palette.neutral90,
               }}
             >
-              Alessandra Blair
+              {name}
             </Text>
             <Text
               style={{
@@ -68,8 +80,7 @@ const ProfileInfo = () => {
                 color: Palette.neutral40,
               }}
             >
-              Hello world I’m Alessandra Blair, I’m from Italy 🇮🇹 I love cooking
-              so much!
+              Hello world I’m {name}, I’m from Italy 🇮🇹 I love cooking so much!
             </Text>
           </View>
           <View style={{ ...Style.containerSpaceBetween, gap: 10 }}>

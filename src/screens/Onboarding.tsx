@@ -1,5 +1,5 @@
 import { View, Text, ImageBackground, StyleSheet } from "react-native";
-import React from "react";
+import React, { useEffect } from "react";
 import { image } from "src/assets";
 import { LinearGradient } from "expo-linear-gradient";
 import {
@@ -15,10 +15,30 @@ import Button from "src/components/Button";
 import { navigate } from "src/navigation/NavigationService";
 import { ROUTES } from "src/navigation/Routes";
 import { useNavigation } from "@react-navigation/native";
+import { useAppDispatch } from "src/store";
+import { getAllRecipe, getAllTags } from "src/store/slices/recipes/thunk";
+import { getAllUsers, getUserById } from "src/store/slices/users/thunk";
+import { useUserStore } from "src/store/slices/users/useUserStore";
+import { IUser } from "src/interface/user";
+
+const currentUserID: any = 152;
 
 const Onboarding = () => {
-  const { bottom } = useSafeAreaInsets();
+  const dispatch = useAppDispatch();
   const navigation = useNavigation();
+  const { setCurrUser } = useUserStore();
+
+  useEffect(() => {
+    try {
+      dispatch(getAllRecipe());
+      dispatch(getAllTags());
+      dispatch(getAllUsers());
+      (async () => {
+        const currUser = await dispatch(getUserById(currentUserID));
+        setCurrUser(currUser.payload);
+      })();
+    } catch (error) {}
+  }, [dispatch]);
 
   return (
     <ImageBackground source={image.onboadingBG} style={{ flex: 1 }}>

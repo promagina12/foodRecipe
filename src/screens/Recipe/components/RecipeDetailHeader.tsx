@@ -1,5 +1,5 @@
 import { View, Text, Image } from "react-native";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Style from "src/styles/Style";
 import { placeholder } from "src/assets";
 import { Palette } from "src/styles/Palette";
@@ -7,13 +7,44 @@ import StarSVG from "src/assets/AppIcon/star";
 import { TextStyle } from "src/styles/fonts";
 import LocationSVG from "src/assets/AppIcon/location";
 import Button from "src/components/Button";
+import { useAppDispatch } from "src/store";
+import { IUser } from "src/interface/user";
+import { getUserById } from "src/store/slices/users/thunk";
+import { isNull } from "lodash";
 
-const RecipeDetailHeader = () => {
+interface Props {
+  img?: string;
+  rating?: number;
+  userId: any;
+  reviewCount?: number;
+}
+
+const RecipeDetailHeader: React.FC<Props> = ({
+  img,
+  rating,
+  reviewCount,
+  userId,
+}) => {
+  const dispatch = useAppDispatch();
+  const [user, setUser] = useState<IUser | null>(null);
+
+  useEffect(() => {
+    (async () => {
+      if (!isNull(userId)) {
+        const response = await dispatch(getUserById(userId));
+
+        if (response.payload) {
+          setUser(response.payload);
+        }
+      }
+    })();
+  }, [dispatch]);
+
   return (
     <View style={{ gap: 16 }}>
       <View style={{ ...Style.containerCenter }}>
         <Image
-          source={placeholder.trendingMeal}
+          source={{ uri: img }}
           style={{ width: "100%", height: 200, borderRadius: 10 }}
         />
       </View>
@@ -28,7 +59,7 @@ const RecipeDetailHeader = () => {
               color: Palette.neutral90,
             }}
           >
-            4,5
+            {rating}
           </Text>
         </View>
         <Text
@@ -37,7 +68,7 @@ const RecipeDetailHeader = () => {
             color: Palette.neutral40,
           }}
         >
-          (300 Reviews)
+          ({reviewCount} Reviews)
         </Text>
       </View>
       <View
@@ -47,7 +78,7 @@ const RecipeDetailHeader = () => {
       >
         <View style={{ ...Style.containerRow, gap: 10 }}>
           <Image
-            source={placeholder.profile}
+            source={{ uri: user?.image }}
             style={{ width: 41, height: 41, borderRadius: 100 }}
           />
           <View>
@@ -57,7 +88,7 @@ const RecipeDetailHeader = () => {
                 color: Palette.neutral100,
               }}
             >
-              Roberta Anny
+              {user?.firstName} {user?.lastName}
             </Text>
             <View
               style={{
@@ -72,7 +103,7 @@ const RecipeDetailHeader = () => {
                   color: Palette.neutral40,
                 }}
               >
-                Bali, Indonesia
+                {user?.address.city}, {user?.address.country}
               </Text>
             </View>
           </View>

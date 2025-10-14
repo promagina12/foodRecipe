@@ -5,6 +5,7 @@ export interface IAddress {
   stateCode: string;
   postalCode: string;
   coordinates: ICoordinates;
+  country: string;
 }
 
 export interface ICoordinates {

@@ -8,13 +8,16 @@ import VideoCard from "src/components/VideoCard";
 import { responsiveHeight } from "react-native-responsive-dimensions";
 import { navigate } from "src/navigation/NavigationService";
 import { ROUTES } from "src/navigation/Routes";
+import useRecipes from "src/hooks/useRecipes";
 
 const Discover = () => {
+  const { recipes } = useRecipes();
+
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: Palette.white }}>
       <DiscoverHeader />
       <FlatList
-        data={Array.from({ length: 10 })}
+        data={recipes}
         contentContainerStyle={{
           paddingTop: 12,
           paddingHorizontal: 20,
@@ -22,8 +25,18 @@ const Discover = () => {
           gap: 16,
         }}
         showsVerticalScrollIndicator={false}
-        renderItem={() => (
-          <VideoCard onPress={() => navigate(ROUTES.RecipeDetail)} />
+        renderItem={({ item }) => (
+          <VideoCard
+            onPress={() =>
+              navigate(ROUTES.RecipeDetail, {
+                itemId: item.id,
+              })
+            }
+            userId={item.userId}
+            img={item.image}
+            name={item.name}
+            rating={item.rating}
+          />
         )}
       />
     </SafeAreaView>

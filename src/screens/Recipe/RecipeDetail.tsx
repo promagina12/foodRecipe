@@ -1,5 +1,5 @@
 import { View, Text, ScrollView, Image } from "react-native";
-import React from "react";
+import React, { useEffect } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Palette } from "src/styles/Palette";
 import NavigationHeader from "src/components/NavigationHeader";
@@ -8,11 +8,28 @@ import { icon } from "src/assets";
 import Style from "src/styles/Style";
 import { TextStyle } from "src/styles/fonts";
 import { responsiveHeight } from "react-native-responsive-dimensions";
+import { useRoute } from "@react-navigation/native";
+import { useAppDispatch } from "src/store";
+import { getRecipeById } from "src/store/slices/recipes/thunk";
+import useRecipes from "src/hooks/useRecipes";
 
 const RecipeDetail = () => {
+  const params = useRoute()?.params;
+  const itemId = params?.itemId;
+  const dispatch = useAppDispatch();
+  const { recipe } = useRecipes();
+
+  useEffect(() => {
+    if (itemId) {
+      dispatch(getRecipeById(itemId));
+    }
+  }, []);
+
+  console.log("recipe: ", recipe);
+
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: Palette.white }}>
-      <NavigationHeader title={`How to make french\ntoast`} />
+      <NavigationHeader title={`How to make ${recipe?.name}`} />
       <ScrollView
         contentContainerStyle={{
           flexGrow: 1,
@@ -22,7 +39,12 @@ const RecipeDetail = () => {
         }}
         showsVerticalScrollIndicator={false}
       >
-        <RecipeDetailHeader />
+        <RecipeDetailHeader
+          img={recipe?.image}
+          rating={recipe?.rating}
+          reviewCount={recipe?.reviewCount}
+          userId={recipe?.userId}
+        />
         <View style={{ gap: 16 }}>
           <View style={{ ...Style.containerSpaceBetween }}>
             <Text
@@ -39,11 +61,11 @@ const RecipeDetail = () => {
                 color: Palette.neutral40,
               }}
             >
-              5 items
+              {recipe?.ingredients.length} items
             </Text>
           </View>
           <View style={{ gap: 12 }}>
-            {Array.from({ length: 5 }).map((_, index) => (
+            {recipe?.ingredients.map((item, index) => (
               <View
                 key={index}
                 style={{
@@ -77,7 +99,7 @@ const RecipeDetail = () => {
                       color: Palette.neutral90,
                     }}
                   >
-                    Bread
+                    {item}
                   </Text>
                 </View>
                 <Text

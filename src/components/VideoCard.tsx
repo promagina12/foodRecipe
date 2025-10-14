@@ -66,7 +66,7 @@ const VideoCard: React.FC<Props> = ({
           }}
         >
           <Image
-            source={img ? { uri: img } : placeholder.trendingMeal}
+            source={{ uri: img }}
             style={{ width: "100%", height: "100%" }}
           />
           <BlurView style={styles.ratingsContainer}>
@@ -129,7 +129,7 @@ const VideoCard: React.FC<Props> = ({
             }}
           >
             <Image
-              source={user?.image ? { uri: user?.image } : placeholder.profile}
+              source={{ uri: user?.image }}
               style={{ width: 32, height: 32, borderRadius: 100 }}
             />
             <Text
@@ -160,6 +160,7 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     left: 8,
     top: 8,
+    overflow: "hidden",
   },
   bookmarkContainer: {
     ...Style.containerCenter,

@@ -26,7 +26,9 @@ const NavigationHeader: React.FC<Props> = ({ title }) => {
           <ThreeDotsHorizontalSVG />
         </Pressable>
       </View>
-      <Text style={{ ...TextStyle.h4Bold, color: Palette.neutral90 }}>
+      <Text
+        style={{ ...TextStyle.h4Bold, color: Palette.neutral90, width: "70%" }}
+      >
         {title}
       </Text>
     </View>

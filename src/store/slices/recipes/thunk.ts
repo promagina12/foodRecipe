@@ -7,10 +7,9 @@ export const getAllRecipe = createAsyncThunk<any>(
   async (_, { rejectWithValue }) => {
     try {
       const response: AxiosResponse = await RecipesService.listRecipes();
-
+      console.log("response.data: ", response.data);
       return response.data;
     } catch (error) {
-      console.log("ERROR: ", error);
       rejectWithValue(error);
     }
   }
@@ -33,6 +32,19 @@ export const getRecipesByTag = createAsyncThunk<any>(
   async (tag: any, { rejectWithValue }) => {
     try {
       const response: AxiosResponse = await RecipesService.tagRecipes(tag);
+
+      return response.data;
+    } catch (error) {
+      rejectWithValue(error);
+    }
+  }
+);
+
+export const getRecipeById = createAsyncThunk<any>(
+  "recipes/getRecipeById",
+  async (id: any, { rejectWithValue }) => {
+    try {
+      const response: AxiosResponse = await RecipesService.getRecipe(id);
 
       return response.data;
     } catch (error) {

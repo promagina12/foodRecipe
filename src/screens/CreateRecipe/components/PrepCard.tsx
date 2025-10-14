@@ -1,4 +1,4 @@
-import { View, Text } from "react-native";
+import { View, Text, TextInput } from "react-native";
 import React from "react";
 import UserSVG from "src/assets/AppIcon/user";
 import { Palette } from "src/styles/Palette";
@@ -10,9 +10,10 @@ import ClockSVG from "src/assets/AppIcon/clock";
 interface Props {
   cook?: boolean;
   value?: string;
+  onChangeText?: ((text: string) => void) | undefined;
 }
 
-const PrepCard: React.FC<Props> = ({ cook, value }) => {
+const PrepCard: React.FC<Props> = ({ cook, value, onChangeText }) => {
   return (
     <View
       style={{
@@ -59,14 +60,29 @@ const PrepCard: React.FC<Props> = ({ cook, value }) => {
           gap: 8,
         }}
       >
-        <Text
-          style={{
-            ...TextStyle.labelRegular,
-            color: Palette.neutral40,
-          }}
-        >
-          {value} {cook && "min"}
-        </Text>
+        <View style={Style.containerRow}>
+          <TextInput
+            placeholder="00"
+            style={{
+              ...TextStyle.labelRegular,
+              color: Palette.neutral90,
+              textAlign: "right",
+            }}
+            placeholderTextColor={Palette.neutral40}
+            value={value}
+            onChangeText={onChangeText}
+          />
+          {cook && (
+            <Text
+              style={{
+                ...TextStyle.labelRegular,
+                color: Palette.neutral40,
+              }}
+            >
+              min
+            </Text>
+          )}
+        </View>
         <ArrowRightSVG color={Palette.neutral100} />
       </View>
     </View>

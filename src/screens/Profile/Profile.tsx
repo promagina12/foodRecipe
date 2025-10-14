@@ -6,7 +6,7 @@ import {
   StyleSheet,
   Pressable,
 } from "react-native";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Palette } from "src/styles/Palette";
 import ProfileHeader from "./Components/ProfileHeader";
@@ -21,14 +21,36 @@ import StarSVG from "src/assets/AppIcon/star";
 import { TextStyle } from "src/styles/fonts";
 import Style from "src/styles/Style";
 import ThreeDotsHorizontalSVG from "src/assets/AppIcon/threeDotsHorizontal";
+import useRecipes from "src/hooks/useRecipes";
+import { useUserStore } from "src/store/slices/users/useUserStore";
+import { IRecipe } from "src/interface/recipe";
+import { filter } from "lodash";
+
+const currentUserID = 43;
 
 const Profile = () => {
+  const { recipes } = useRecipes();
+  const { currUser } = useUserStore();
+  const [myRecipes, setMyRecipes] = useState<IRecipe[]>([]);
+
+  useEffect(() => {
+    if (currUser) {
+      const newData = filter(recipes, ["userId", currUser.id]);
+      setMyRecipes(newData);
+    }
+  }, [currUser]);
+
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: Palette.white }}>
       <ProfileHeader />
-      <ProfileInfo />
+      <ProfileInfo
+        img={currUser?.image}
+        name={`${currUser?.firstName} ${currUser?.lastName}`}
+        recipeCount={myRecipes.length}
+        videosCount={myRecipes.length}
+      />
       <FlatList
-        data={Array.from({ length: 3 })}
+        data={myRecipes}
         contentContainerStyle={{
           paddingTop: 20,
           paddingHorizontal: 20,
@@ -36,7 +58,7 @@ const Profile = () => {
           gap: 16,
         }}
         showsVerticalScrollIndicator={false}
-        renderItem={() => (
+        renderItem={({ item }) => (
           <View
             style={{
               borderRadius: 10,
@@ -45,7 +67,7 @@ const Profile = () => {
             }}
           >
             <Image
-              source={placeholder.trendingMeal}
+              source={{ uri: item.image }}
               style={{ width: "100%", height: 200 }}
             />
             <BlurView style={styles.ratingsContainer}>
@@ -56,7 +78,7 @@ const Profile = () => {
                   marginTop: 4,
                 }}
               >
-                4,5
+                {item.rating}
               </Text>
             </BlurView>
             <Pressable style={styles.bookmarkContainer}>
@@ -69,14 +91,15 @@ const Profile = () => {
                   ...TextStyle.paragraphBold,
                 }}
               >
-                Simple chicken meal prep dishes
+                {item.name}
               </Text>
               <Text
                 style={{
                   ...TextStyle.smallRegular,
                 }}
               >
-                12 Ingredients | 40 min
+                {item.ingredients.length} Ingredients | {item.cookTimeMinutes}{" "}
+                min
               </Text>
             </View>
           </View>
@@ -98,6 +121,7 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     left: 8,
     top: 8,
+    overflow: "hidden",
   },
   bookmarkContainer: {
     ...Style.containerCenter,
