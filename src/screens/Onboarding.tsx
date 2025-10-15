@@ -12,24 +12,19 @@ import { ROUTES } from "src/navigation/Routes";
 import { useAppDispatch } from "src/store";
 import { getAllRecipe, getAllTags } from "src/store/slices/recipes/thunk";
 import { getAllUsers, getUserById } from "src/store/slices/users/thunk";
-import { useUserStore } from "src/store/slices/users/useUserStore";
 import { navigate } from "src/navigation/NavigationService";
 
 const currentUserID: any = 152;
 
 const Onboarding = () => {
   const dispatch = useAppDispatch();
-  const { setCurrUser } = useUserStore();
 
   useEffect(() => {
     try {
       dispatch(getAllRecipe());
       dispatch(getAllTags());
       dispatch(getAllUsers());
-      (async () => {
-        const currUser = await dispatch(getUserById(currentUserID));
-        setCurrUser(currUser.payload);
-      })();
+      dispatch(getUserById(currentUserID));
     } catch (error) {
       console.log("Onboarding ERROR: ", error);
     }

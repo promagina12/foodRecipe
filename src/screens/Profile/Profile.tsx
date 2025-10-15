@@ -21,16 +21,16 @@ import { TextStyle } from "src/styles/fonts";
 import Style from "src/styles/Style";
 import ThreeDotsHorizontalSVG from "src/assets/AppIcon/threeDotsHorizontal";
 import useRecipes from "src/hooks/useRecipes";
-import { useUserStore } from "src/store/slices/users/useUserStore";
 import { IRecipe } from "src/interface/recipe";
 import { filter } from "lodash";
 import { navigate } from "src/navigation/NavigationService";
 import { ROUTES } from "src/navigation/Routes";
+import useUsers from "src/hooks/useUsers";
 
 const Profile = () => {
   const { recipes } = useRecipes();
-  const { currUser } = useUserStore();
   const [myRecipes, setMyRecipes] = useState<IRecipe[]>([]);
+  const {currUser} = useUsers();
 
   useEffect(() => {
     if (currUser) {
