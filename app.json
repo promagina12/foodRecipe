@@ -3,6 +3,12 @@
     "name": "foodRecipe",
     "slug": "foodRecipe",
     "version": "1.0.0",
+    "icon": "./assets/image/appIcon.png",
+    "splash": {
+      "image": "./assets/image/splash.png",
+      "resizeMode": "cover",
+      "backgroundColor": "#181818"
+    },
     "plugins": [
       "expo-font",
       [
@@ -17,10 +23,35 @@
         {
           "photosPermission": "The app accesses your photos to let you share them with your friends."
         }
+      ],
+      [
+        "expo-dev-client",
+        {
+          "launchMode": "most-recent"
+        }
+      ],
+      [
+        "expo-splash-screen",
+        {
+          "backgroundColor": "#232323",
+          "image": "./assets/image/splash.png",
+          "dark": {
+            "image": "./assets/image/splash.png",
+            "backgroundColor": "#000000"
+          },
+          "imageWidth": 200
+        }
       ]
     ],
     "android": {
-      "package": "com.anonymous.foodRecipe"
+      "package": "com.anonymous.foodRecipe",
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/image/appIcon.png"
+      },
+      "permissions": ["android.permission.RECORD_AUDIO"]
+    },
+    "ios": {
+      "bundleIdentifier": "com.anonymous.foodRecipe"
     }
   }
 }

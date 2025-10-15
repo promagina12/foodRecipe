@@ -15,6 +15,8 @@ import { PersistGate } from "redux-persist/integration/react";
 import MainStack from "src/navigation/MainStack";
 import { navigationRef } from "src/navigation/NavigationService";
 import { persistor, store } from "src/store";
+import * as SplashScreen from "expo-splash-screen";
+
 
 export default function App() {
   const [loaded] = useFonts({
@@ -23,6 +25,12 @@ export default function App() {
     PoppinsSemiBold: Poppins_600SemiBold,
     PoppinsBold: Poppins_700Bold,
   });
+
+  useEffect(() => {
+    if (loaded) {
+      SplashScreen.hide();
+    }
+  }, [loaded]);
 
   if (!loaded) {
     return null;
