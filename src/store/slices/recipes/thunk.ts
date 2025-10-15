@@ -1,5 +1,6 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import { AxiosResponse } from "axios";
+import { IRecipe, IRecipes } from "src/interface/recipe";
 import RecipesService from "src/services/Recipes";
 
 export const getAllRecipe = createAsyncThunk<any>(
@@ -42,9 +43,9 @@ export const getRecipesByTag = createAsyncThunk<any>(
   }
 );
 
-export const getRecipeById = createAsyncThunk<any>(
+export const getRecipeById = createAsyncThunk<IRecipe, string>(
   "recipes/getRecipeById",
-  async (id: any, { rejectWithValue }) => {
+  async (id: string, { rejectWithValue }) => {
     try {
       const response: AxiosResponse = await RecipesService.getRecipe(id);
 

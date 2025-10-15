@@ -1,26 +1,29 @@
-import { View, Text, ScrollView, Image, ActivityIndicator } from "react-native";
+import { View, Text, ScrollView, ActivityIndicator } from "react-native";
 import React, { useEffect } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Palette } from "src/styles/Palette";
 import NavigationHeader from "src/components/NavigationHeader";
 import RecipeDetailHeader from "./components/RecipeDetailHeader";
-import { icon } from "src/assets";
 import Style from "src/styles/Style";
 import { TextStyle } from "src/styles/fonts";
 import { responsiveHeight } from "react-native-responsive-dimensions";
-import { useRoute } from "@react-navigation/native";
+import { RouteProp, useRoute } from "@react-navigation/native";
 import { useAppDispatch } from "src/store";
 import { getRecipeById } from "src/store/slices/recipes/thunk";
 import useRecipes from "src/hooks/useRecipes";
+import { RootStackParamList } from "src/navigation/types";
+import IngredientsCard from "./components/IngredientsCard";
 
+type Props = RouteProp<RootStackParamList, "RecipeDetail">;
 const RecipeDetail = () => {
-  const params = useRoute()?.params;
+  const params = useRoute<Props>().params;
+  const { itemId } = params;
   const dispatch = useAppDispatch();
   const { recipe, isLoadingRecipe } = useRecipes();
 
   useEffect(() => {
-    if (params?.itemId) {
-      dispatch(getRecipeById(params?.itemId));
+    if (itemId) {
+      dispatch(getRecipeById(itemId));
     }
   }, [params]);
 
@@ -71,54 +74,7 @@ const RecipeDetail = () => {
           </View>
           <View style={{ gap: 12 }}>
             {recipe?.ingredients.map((item, index) => (
-              <View
-                key={index}
-                style={{
-                  ...Style.containerSpaceBetween,
-                  paddingHorizontal: 16,
-                  paddingVertical: 12,
-                  backgroundColor: Palette.neutral10,
-                  borderRadius: 12,
-                  gap: 10,
-                }}
-              >
-                <View
-                  style={{
-                    ...Style.containerRow,
-                    gap: 16,
-                    flex: 1,
-                  }}
-                >
-                  <View
-                    style={{
-                      ...Style.containerCenter,
-                      width: 52,
-                      height: 52,
-                      backgroundColor: Palette.white,
-                      borderRadius: 10,
-                    }}
-                  >
-                    <Image source={icon.noodleIcon} />
-                  </View>
-                  <Text
-                    style={{
-                      ...TextStyle.paragraphBold,
-                      color: Palette.neutral90,
-                      flex: 1,
-                    }}
-                  >
-                    {item}
-                  </Text>
-                </View>
-                <Text
-                  style={{
-                    ...TextStyle.labelRegular,
-                    color: Palette.neutral40,
-                  }}
-                >
-                  200g
-                </Text>
-              </View>
+              <IngredientsCard label={item} key={index} />
             ))}
           </View>
         </View>

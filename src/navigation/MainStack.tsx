@@ -5,8 +5,9 @@ import { createStackNavigator } from "@react-navigation/stack";
 import BottomStack from "./BottomStack";
 import RecipeDetail from "src/screens/Recipe/RecipeDetail";
 import CreateRecipe from "src/screens/CreateRecipe/CreateRecipe";
+import { RootStackParamList } from "./types";
 
-const Stack = createStackNavigator();
+const Stack = createStackNavigator<RootStackParamList>();
 
 const MainStack = () => {
   return (

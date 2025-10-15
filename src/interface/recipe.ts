@@ -16,3 +16,7 @@ export interface IRecipe {
   reviewCount: number;
   mealType: string[];
 }
+
+export interface IRecipes {
+  recipes: IRecipe[];
+}
