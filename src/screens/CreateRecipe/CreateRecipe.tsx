@@ -11,7 +11,6 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { Palette } from "src/styles/Palette";
 import NavigationHeader from "src/components/NavigationHeader";
 import { responsiveHeight } from "react-native-responsive-dimensions";
-import { placeholder } from "src/assets";
 import { BlurView } from "expo-blur";
 import Style from "src/styles/Style";
 import PlaySVG from "src/assets/AppIcon/play";

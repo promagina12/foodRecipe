@@ -1,4 +1,3 @@
-import { IRecipe } from "src/interface/recipe";
 import { IUser } from "src/interface/user";
 import { create } from "zustand";
 

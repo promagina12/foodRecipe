@@ -1,6 +1,5 @@
 import { View, Text, Image } from "react-native";
 import React from "react";
-import { placeholder } from "src/assets";
 import Button from "src/components/Button";
 import { ButtonTypes } from "src/types/types";
 import Style from "src/styles/Style";

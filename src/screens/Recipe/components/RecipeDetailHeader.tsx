@@ -1,7 +1,6 @@
 import { View, Text, Image, ActivityIndicator } from "react-native";
 import React, { useEffect, useState } from "react";
 import Style from "src/styles/Style";
-import { placeholder } from "src/assets";
 import { Palette } from "src/styles/Palette";
 import StarSVG from "src/assets/AppIcon/star";
 import { TextStyle } from "src/styles/fonts";

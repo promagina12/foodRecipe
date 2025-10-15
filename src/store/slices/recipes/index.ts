@@ -7,7 +7,6 @@ import {
 } from "./thunk";
 import { RootState } from "src/store";
 import { IRecipe } from "src/interface/recipe";
-import { tags } from "react-native-svg/lib/typescript/xmlTags";
 
 export type RecipeState = {
   isLoadingRecipes: boolean;

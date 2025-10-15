@@ -10,7 +10,6 @@ export const getAllUsers = createAsyncThunk<any>(
 
       return response.data;
     } catch (error) {
-      console.log("ERROR: ", error);
       rejectWithValue(error);
     }
   }

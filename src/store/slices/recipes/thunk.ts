@@ -20,7 +20,6 @@ export const getAllTags = createAsyncThunk<any>(
   async (_, { rejectWithValue }) => {
     try {
       const response: AxiosResponse = await RecipesService.listTag();
-console.log("response: ", response);
 
       return response.data;
     } catch (error) {

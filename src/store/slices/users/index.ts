@@ -1,6 +1,6 @@
 import { createSelector, createSlice } from "@reduxjs/toolkit";
 import { RootState } from "src/store";
-import { getAllUsers, getUserById } from "./thunk";
+import { getAllUsers } from "./thunk";
 import { IUser } from "src/interface/user";
 
 export type UserState = {
