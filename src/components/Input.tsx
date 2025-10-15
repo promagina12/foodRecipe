@@ -1,13 +1,5 @@
-import {
-  View,
-  Text,
-  TextInput,
-  StyleProp,
-  TextStyle,
-  ViewStyle,
-} from "react-native";
+import { View, TextInput, StyleProp, TextStyle, ViewStyle } from "react-native";
 import React, { useState } from "react";
-import Style from "src/styles/Style";
 import { Palette } from "src/styles/Palette";
 import { TextStyle as textStyle } from "src/styles/fonts";
 

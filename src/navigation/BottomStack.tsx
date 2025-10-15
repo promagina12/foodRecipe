@@ -1,13 +1,11 @@
-import { View, Text, StyleSheet, Pressable } from "react-native";
+import { View, StyleSheet, Pressable } from "react-native";
 import React, { useRef } from "react";
-import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { ROUTES } from "./Routes";
 import Home from "src/screens/Home/Home";
 import Discover from "src/screens/Discover/Discover";
 import Notification from "src/screens/Notification/Notification";
 import Profile from "src/screens/Profile/Profile";
 import {
-  CurvedBottomBar,
   CurvedBottomBarExpo,
   ICurvedBottomBarRef,
 } from "react-native-curved-bottom-bar";
@@ -21,14 +19,10 @@ import BookmarkActiveSVG from "src/assets/AppIcon/bookmarkActive";
 import BellActiveSVG from "src/assets/AppIcon/bellActive";
 import PersonActiveSVG from "src/assets/AppIcon/personActive";
 import { Palette } from "src/styles/Palette";
-import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { navigate } from "./NavigationService";
-
-const BottomTab = createBottomTabNavigator();
 
 const BottomStack = () => {
   const ref = useRef<ICurvedBottomBarRef>(null);
-  const { bottom } = useSafeAreaInsets();
 
   const _renderIcon = (routeName: string, selectedTab: string) => {
     switch (routeName) {
