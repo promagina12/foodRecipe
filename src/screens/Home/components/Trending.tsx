@@ -3,6 +3,8 @@ import React from "react";
 import CardContainer from "./CardContainer";
 import VideoCard from "src/components/VideoCard";
 import { IRecipe } from "src/interface/recipe";
+import { navigate } from "src/navigation/NavigationService";
+import { ROUTES } from "src/navigation/Routes";
 
 interface Props {
   recipes?: IRecipe[];
@@ -26,6 +28,11 @@ const Trending: React.FC<Props> = ({ recipes }) => {
             name={item.name}
             rating={item.rating}
             userId={item.userId}
+            onPress={() =>
+              navigate(ROUTES.RecipeDetail, {
+                itemId: item.id,
+              })
+            }
           />
         )}
       />

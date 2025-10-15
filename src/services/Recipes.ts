@@ -2,7 +2,7 @@ import instance from "src/utils/config";
 
 const RecipesService = {
   listRecipes(params?: any) {
-    return instance.get("/recipes?limit=0", {
+    return instance.get("/recipes", {
       params,
     });
   },

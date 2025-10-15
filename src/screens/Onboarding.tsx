@@ -2,30 +2,23 @@ import { View, Text, ImageBackground, StyleSheet } from "react-native";
 import React, { useEffect } from "react";
 import { image } from "src/assets";
 import { LinearGradient } from "expo-linear-gradient";
-import {
-  SafeAreaView,
-  useSafeAreaInsets,
-} from "react-native-safe-area-context";
+import { SafeAreaView } from "react-native-safe-area-context";
 import StarSVG from "src/assets/AppIcon/star";
 import { Palette } from "src/styles/Palette";
-import Style from "src/styles/Style";
 import { TextStyle } from "src/styles/fonts";
 import { responsiveHeight } from "react-native-responsive-dimensions";
 import Button from "src/components/Button";
-import { navigate } from "src/navigation/NavigationService";
 import { ROUTES } from "src/navigation/Routes";
-import { useNavigation } from "@react-navigation/native";
 import { useAppDispatch } from "src/store";
 import { getAllRecipe, getAllTags } from "src/store/slices/recipes/thunk";
 import { getAllUsers, getUserById } from "src/store/slices/users/thunk";
 import { useUserStore } from "src/store/slices/users/useUserStore";
-import { IUser } from "src/interface/user";
+import { navigate } from "src/navigation/NavigationService";
 
 const currentUserID: any = 152;
 
 const Onboarding = () => {
   const dispatch = useAppDispatch();
-  const navigation = useNavigation();
   const { setCurrUser } = useUserStore();
 
   useEffect(() => {
@@ -37,7 +30,9 @@ const Onboarding = () => {
         const currUser = await dispatch(getUserById(currentUserID));
         setCurrUser(currUser.payload);
       })();
-    } catch (error) {}
+    } catch (error) {
+      console.log("Onboarding ERROR: ", error);
+    }
   }, [dispatch]);
 
   return (
@@ -75,7 +70,7 @@ const Onboarding = () => {
           </View>
           <Button
             title="Start cooking "
-            onPress={() => navigation.navigate(ROUTES.BottomStack)}
+            onPress={() => navigate(ROUTES.BottomStack)}
           />
         </View>
       </SafeAreaView>

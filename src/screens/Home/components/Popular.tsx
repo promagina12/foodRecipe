@@ -1,30 +1,34 @@
-import { View, Text, FlatList, Pressable, Image } from "react-native";
+import {
+  View,
+  Text,
+  FlatList,
+  Pressable,
+  Image,
+  ActivityIndicator,
+} from "react-native";
 import React, { useEffect, useState } from "react";
 import CardContainer from "./CardContainer";
 import { TextStyle } from "src/styles/fonts";
 import { Palette } from "src/styles/Palette";
 import Style from "src/styles/Style";
-import { placeholder } from "src/assets";
 import BookmarkSVG from "src/assets/AppIcon/bookmark";
 import DropShadow from "react-native-drop-shadow";
 import { useAppDispatch } from "src/store";
 import useRecipes from "src/hooks/useRecipes";
 import { getRecipesByTag } from "src/store/slices/recipes/thunk";
+import { navigate } from "src/navigation/NavigationService";
+import { ROUTES } from "src/navigation/Routes";
 
-interface Props {
-  tags: string[];
-}
-
-const Popular: React.FC<Props> = ({ tags }) => {
+const Popular = () => {
   const dispatch = useAppDispatch();
-  const { tagRecipes } = useRecipes();
+  const { tagRecipes, isLoadingTagRecipes, tags } = useRecipes();
   const [selectedCategory, setSelectedCategory] = useState<any>(tags[0]);
 
   useEffect(() => {
     if (selectedCategory) {
       dispatch(getRecipesByTag(selectedCategory));
     }
-  }, [selectedCategory]);
+  }, [selectedCategory, tags]);
 
   return (
     <CardContainer title="Popular category" hideSeeAll>
@@ -61,99 +65,110 @@ const Popular: React.FC<Props> = ({ tags }) => {
             </Pressable>
           )}
         />
-        <FlatList
-          data={tagRecipes}
-          horizontal
-          contentContainerStyle={{
-            paddingHorizontal: 20,
-            gap: 16,
-            paddingTop: 60,
-          }}
-          showsHorizontalScrollIndicator={false}
-          renderItem={({ item }) => (
-            <View style={{ width: 160, ...Style.containerCenter }}>
-              <DropShadow
-                style={{
-                  shadowColor: "#000",
-                  shadowOffset: { width: 0, height: 0 },
-                  shadowOpacity: 0.25,
-                  shadowRadius: 3,
-                  position: "absolute",
-                  zIndex: 1,
-                  top: -55,
-                }}
+        {isLoadingTagRecipes ? (
+          <ActivityIndicator color={Palette.primary50} />
+        ) : (
+          <FlatList
+            data={tagRecipes}
+            horizontal
+            contentContainerStyle={{
+              paddingHorizontal: 20,
+              gap: 16,
+              paddingTop: 60,
+            }}
+            showsHorizontalScrollIndicator={false}
+            renderItem={({ item }) => (
+              <Pressable
+                style={{ width: 160, ...Style.containerCenter }}
+                onPress={() =>
+                  navigate(ROUTES.RecipeDetail, {
+                    itemId: item.id,
+                  })
+                }
               >
-                <Image
-                  source={{ uri: item.image }}
+                <DropShadow
                   style={{
-                    width: 110,
-                    height: 110,
-                    borderRadius: 100,
-                  }}
-                />
-              </DropShadow>
-              <View
-                style={{
-                  backgroundColor: Palette.neutral10,
-                  paddingHorizontal: 12,
-                  paddingVertical: 12,
-                  borderRadius: 12,
-                  gap: 18,
-                  paddingTop: 65,
-                  flex: 1,
-                  width: "100%",
-                  justifyContent: "space-between",
-                }}
-              >
-                <Text
-                  style={{
-                    ...TextStyle.labelBold,
-                    color: Palette.neutral90,
-                    textAlign: "center",
+                    shadowColor: "#000",
+                    shadowOffset: { width: 0, height: 0 },
+                    shadowOpacity: 0.25,
+                    shadowRadius: 3,
+                    position: "absolute",
+                    zIndex: 1,
+                    top: -55,
                   }}
                 >
-                  {item.name}
-                </Text>
-                <View
-                  style={{
-                    ...Style.containerSpaceBetween,
-                    alignItems: "flex-end",
-                  }}
-                >
-                  <View style={{ gap: 4 }}>
-                    <Text
-                      style={{
-                        ...TextStyle.smallRegular,
-                        color: Palette.neutral30,
-                      }}
-                    >
-                      Time
-                    </Text>
-                    <Text
-                      style={{
-                        ...TextStyle.smallBold,
-                        color: Palette.neutral90,
-                      }}
-                    >
-                      {item.cookTimeMinutes} Mins
-                    </Text>
-                  </View>
-                  <Pressable
+                  <Image
+                    source={{ uri: item.image }}
                     style={{
-                      ...Style.containerCenter,
-                      width: 24,
-                      height: 24,
-                      backgroundColor: Palette.white,
+                      width: 110,
+                      height: 110,
                       borderRadius: 100,
                     }}
+                  />
+                </DropShadow>
+                <View
+                  style={{
+                    backgroundColor: Palette.neutral10,
+                    paddingHorizontal: 12,
+                    paddingVertical: 12,
+                    borderRadius: 12,
+                    gap: 18,
+                    paddingTop: 65,
+                    flex: 1,
+                    width: "100%",
+                    justifyContent: "space-between",
+                  }}
+                >
+                  <Text
+                    style={{
+                      ...TextStyle.labelBold,
+                      color: Palette.neutral90,
+                      textAlign: "center",
+                    }}
                   >
-                    <BookmarkSVG color={Palette.neutral90} size={16} />
-                  </Pressable>
+                    {item.name}
+                  </Text>
+                  <View
+                    style={{
+                      ...Style.containerSpaceBetween,
+                      alignItems: "flex-end",
+                    }}
+                  >
+                    <View style={{ gap: 4 }}>
+                      <Text
+                        style={{
+                          ...TextStyle.smallRegular,
+                          color: Palette.neutral30,
+                        }}
+                      >
+                        Time
+                      </Text>
+                      <Text
+                        style={{
+                          ...TextStyle.smallBold,
+                          color: Palette.neutral90,
+                        }}
+                      >
+                        {item.cookTimeMinutes} Mins
+                      </Text>
+                    </View>
+                    <Pressable
+                      style={{
+                        ...Style.containerCenter,
+                        width: 24,
+                        height: 24,
+                        backgroundColor: Palette.white,
+                        borderRadius: 100,
+                      }}
+                    >
+                      <BookmarkSVG color={Palette.neutral90} size={16} />
+                    </Pressable>
+                  </View>
                 </View>
-              </View>
-            </View>
-          )}
-        />
+              </Pressable>
+            )}
+          />
+        )}
       </View>
     </CardContainer>
   );

@@ -1,4 +1,4 @@
-import { View, Text, Image } from "react-native";
+import { View, Text, Image, Pressable } from "react-native";
 import React, { useEffect, useState } from "react";
 import { placeholder } from "src/assets";
 import { TextStyle } from "src/styles/fonts";
@@ -12,9 +12,15 @@ interface Props {
   image: string;
   name: string;
   userId: any;
+  onPress: () => void;
 }
 
-const RecentRecipeCard: React.FC<Props> = ({ image, name, userId }) => {
+const RecentRecipeCard: React.FC<Props> = ({
+  image,
+  name,
+  userId,
+  onPress,
+}) => {
   const dispatch = useAppDispatch();
   const [user, setUser] = useState<IUser | null>(null);
 
@@ -31,7 +37,7 @@ const RecentRecipeCard: React.FC<Props> = ({ image, name, userId }) => {
   }, [dispatch]);
 
   return (
-    <View style={{ width: 124, gap: 8 }}>
+    <Pressable style={{ width: 124, gap: 8 }} onPress={onPress}>
       <Image
         source={image ? { uri: image } : placeholder.trendingMeal}
         style={{ width: "100%", height: 124, borderRadius: 10 }}
@@ -61,7 +67,7 @@ const RecentRecipeCard: React.FC<Props> = ({ image, name, userId }) => {
           By {user?.firstName} {user?.lastName}
         </Text>
       </View>
-    </View>
+    </Pressable>
   );
 };
 

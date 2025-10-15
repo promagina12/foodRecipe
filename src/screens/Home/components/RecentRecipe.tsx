@@ -1,11 +1,10 @@
-import { View, Text, FlatList, Image } from "react-native";
-import React, { useEffect, useState } from "react";
+import { FlatList } from "react-native";
+import React from "react";
 import CardContainer from "./CardContainer";
-import { placeholder } from "src/assets";
-import { TextStyle } from "src/styles/fonts";
-import { Palette } from "src/styles/Palette";
 import { IRecipe } from "src/interface/recipe";
 import RecentRecipeCard from "./RecentRecipeCard";
+import { navigate } from "src/navigation/NavigationService";
+import { ROUTES } from "src/navigation/Routes";
 
 interface Props {
   recipes: IRecipe[];
@@ -24,6 +23,11 @@ const RecentRecipe: React.FC<Props> = ({ recipes }) => {
             image={item.image}
             name={item.name}
             userId={item.userId}
+            onPress={() =>
+              navigate(ROUTES.RecipeDetail, {
+                itemId: item.id,
+              })
+            }
           />
         )}
       />

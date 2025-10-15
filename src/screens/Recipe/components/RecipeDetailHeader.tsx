@@ -1,4 +1,4 @@
-import { View, Text, Image } from "react-native";
+import { View, Text, Image, ActivityIndicator } from "react-native";
 import React, { useEffect, useState } from "react";
 import Style from "src/styles/Style";
 import { placeholder } from "src/assets";
@@ -27,15 +27,18 @@ const RecipeDetailHeader: React.FC<Props> = ({
 }) => {
   const dispatch = useAppDispatch();
   const [user, setUser] = useState<IUser | null>(null);
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     (async () => {
       if (!isNull(userId)) {
+        setIsLoading(true);
         const response = await dispatch(getUserById(userId));
 
         if (response.payload) {
           setUser(response.payload);
         }
+        setIsLoading(false);
       }
     })();
   }, [dispatch]);
@@ -76,38 +79,44 @@ const RecipeDetailHeader: React.FC<Props> = ({
           ...Style.containerSpaceBetween,
         }}
       >
-        <View style={{ ...Style.containerRow, gap: 10 }}>
-          <Image
-            source={{ uri: user?.image }}
-            style={{ width: 41, height: 41, borderRadius: 100 }}
-          />
-          <View>
-            <Text
-              style={{
-                ...TextStyle.paragraphBold,
-                color: Palette.neutral100,
-              }}
-            >
-              {user?.firstName} {user?.lastName}
-            </Text>
-            <View
-              style={{
-                ...Style.containerRow,
-                gap: 4,
-              }}
-            >
-              <LocationSVG size={16} color={Palette.primary50} />
+        {isLoading ? (
+          <View style={{ ...Style.containerCenter, flex: 1 }}>
+            <ActivityIndicator color={Palette.primary50} />
+          </View>
+        ) : (
+          <View style={{ ...Style.containerRow, gap: 10 }}>
+            <Image
+              source={{ uri: user?.image }}
+              style={{ width: 41, height: 41, borderRadius: 100 }}
+            />
+            <View>
               <Text
                 style={{
-                  ...TextStyle.labelRegular,
-                  color: Palette.neutral40,
+                  ...TextStyle.paragraphBold,
+                  color: Palette.neutral100,
                 }}
               >
-                {user?.address.city}, {user?.address.country}
+                {user?.firstName} {user?.lastName}
               </Text>
+              <View
+                style={{
+                  ...Style.containerRow,
+                  gap: 4,
+                }}
+              >
+                <LocationSVG size={16} color={Palette.primary50} />
+                <Text
+                  style={{
+                    ...TextStyle.labelRegular,
+                    color: Palette.neutral40,
+                  }}
+                >
+                  {user?.address.city}, {user?.address.country}
+                </Text>
+              </View>
             </View>
           </View>
-        </View>
+        )}
         <Button small title="Follow" hideIcon />
       </View>
     </View>

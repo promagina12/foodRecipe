@@ -1,5 +1,5 @@
-import { View, Text, ScrollView } from "react-native";
-import React, { useEffect } from "react";
+import { View, ScrollView } from "react-native";
+import React from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Palette } from "src/styles/Palette";
 import Trending from "./components/Trending";
@@ -11,7 +11,7 @@ import PopularCreator from "./components/PopularCreator";
 import useRecipes from "src/hooks/useRecipes";
 
 const Home = () => {
-  const { recipes, tags } = useRecipes();
+  const { recipes } = useRecipes();
 
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: Palette.white, gap: 20 }}>
@@ -25,7 +25,7 @@ const Home = () => {
           showsVerticalScrollIndicator={false}
         >
           <Trending recipes={recipes} />
-          <Popular tags={tags} />
+          <Popular />
           <RecentRecipe recipes={recipes} />
           <PopularCreator />
         </ScrollView>

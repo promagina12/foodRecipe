@@ -91,8 +91,8 @@ const { actions, reducer } = createSlice({
       state.isLoadingTagRecipes = true;
     });
     builder.addCase(getRecipesByTag.fulfilled, (state, { payload }) => {
-      state.isLoadingTagRecipes = false;
       state.tagRecipes = payload.recipes;
+      state.isLoadingTagRecipes = false;
     });
     builder.addCase(getRecipesByTag.rejected, (state, action) => {
       state.isLoadingTagRecipes = false;

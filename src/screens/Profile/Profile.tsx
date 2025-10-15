@@ -11,7 +11,6 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { Palette } from "src/styles/Palette";
 import ProfileHeader from "./Components/ProfileHeader";
 import ProfileInfo from "./Components/ProfileInfo";
-import { placeholder } from "src/assets";
 import {
   responsiveHeight,
   responsiveWidth,
@@ -25,8 +24,8 @@ import useRecipes from "src/hooks/useRecipes";
 import { useUserStore } from "src/store/slices/users/useUserStore";
 import { IRecipe } from "src/interface/recipe";
 import { filter } from "lodash";
-
-const currentUserID = 43;
+import { navigate } from "src/navigation/NavigationService";
+import { ROUTES } from "src/navigation/Routes";
 
 const Profile = () => {
   const { recipes } = useRecipes();
@@ -59,12 +58,17 @@ const Profile = () => {
         }}
         showsVerticalScrollIndicator={false}
         renderItem={({ item }) => (
-          <View
+          <Pressable
             style={{
               borderRadius: 10,
               overflow: "hidden",
               position: "relative",
             }}
+            onPress={() =>
+              navigate(ROUTES.RecipeDetail, {
+                itemId: item.id,
+              })
+            }
           >
             <Image
               source={{ uri: item.image }}
@@ -102,7 +106,7 @@ const Profile = () => {
                 min
               </Text>
             </View>
-          </View>
+          </Pressable>
         )}
       />
     </SafeAreaView>

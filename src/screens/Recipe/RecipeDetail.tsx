@@ -1,4 +1,4 @@
-import { View, Text, ScrollView, Image } from "react-native";
+import { View, Text, ScrollView, Image, ActivityIndicator } from "react-native";
 import React, { useEffect } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Palette } from "src/styles/Palette";
@@ -15,17 +15,22 @@ import useRecipes from "src/hooks/useRecipes";
 
 const RecipeDetail = () => {
   const params = useRoute()?.params;
-  const itemId = params?.itemId;
   const dispatch = useAppDispatch();
-  const { recipe } = useRecipes();
+  const { recipe, isLoadingRecipe } = useRecipes();
 
   useEffect(() => {
-    if (itemId) {
-      dispatch(getRecipeById(itemId));
+    if (params?.itemId) {
+      dispatch(getRecipeById(params?.itemId));
     }
-  }, []);
+  }, [params]);
 
-  console.log("recipe: ", recipe);
+  if (isLoadingRecipe) {
+    return (
+      <View style={{ flex: 1, ...Style.containerCenter }}>
+        <ActivityIndicator color={Palette.primary50} />;
+      </View>
+    );
+  }
 
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: Palette.white }}>
@@ -74,12 +79,14 @@ const RecipeDetail = () => {
                   paddingVertical: 12,
                   backgroundColor: Palette.neutral10,
                   borderRadius: 12,
+                  gap: 10,
                 }}
               >
                 <View
                   style={{
                     ...Style.containerRow,
                     gap: 16,
+                    flex: 1,
                   }}
                 >
                   <View
@@ -97,6 +104,7 @@ const RecipeDetail = () => {
                     style={{
                       ...TextStyle.paragraphBold,
                       color: Palette.neutral90,
+                      flex: 1,
                     }}
                   >
                     {item}

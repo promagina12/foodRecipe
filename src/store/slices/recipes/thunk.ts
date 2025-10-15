@@ -7,7 +7,7 @@ export const getAllRecipe = createAsyncThunk<any>(
   async (_, { rejectWithValue }) => {
     try {
       const response: AxiosResponse = await RecipesService.listRecipes();
-      console.log("response.data: ", response.data);
+
       return response.data;
     } catch (error) {
       rejectWithValue(error);
@@ -20,8 +20,11 @@ export const getAllTags = createAsyncThunk<any>(
   async (_, { rejectWithValue }) => {
     try {
       const response: AxiosResponse = await RecipesService.listTag();
+console.log("response: ", response);
+
       return response.data;
     } catch (error) {
+      console.log("getAllTags: ", error);
       rejectWithValue(error);
     }
   }

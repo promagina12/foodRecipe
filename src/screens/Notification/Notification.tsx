@@ -3,9 +3,7 @@ import React from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Palette } from "src/styles/Palette";
 import NotificationHeader from "./components/NotificationHeader";
-import FileSVG from "src/assets/AppIcon/file";
 import { TextStyle } from "src/styles/fonts";
-import Style from "src/styles/Style";
 import NotifCard from "./components/NotifCard";
 
 const Notification = () => {
