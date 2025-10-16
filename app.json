@@ -33,11 +33,11 @@
       [
         "expo-splash-screen",
         {
-          "backgroundColor": "#232323",
+          "backgroundColor": "#181818",
           "image": "./assets/image/splash.png",
           "dark": {
             "image": "./assets/image/splash.png",
-            "backgroundColor": "#000000"
+            "backgroundColor": "#181818"
           },
           "imageWidth": 200
         }
@@ -46,7 +46,7 @@
     "android": {
       "package": "com.anonymous.foodRecipe",
       "adaptiveIcon": {
-        "foregroundImage": "./assets/image/appIcon.png"
+        "foregroundImage": "./assets/image/adaptiveIcon.png"
       },
       "permissions": ["android.permission.RECORD_AUDIO"]
     },
